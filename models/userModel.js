@@ -148,7 +148,8 @@ function User()
         connection.acquire(function(err, con) 
         {
 		    console.log(user.email);
-            con.query('select id from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
+		    console.log(user.password);
+            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
             {
                 con.release();
                 if (err) 
