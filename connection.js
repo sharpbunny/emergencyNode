@@ -12,9 +12,9 @@ function Connection()
     this.pool = mysql.createPool({
       connectionLimit: 10,
       host: 'localhost',
-      user: 'rest',
-      password: 'rest',
-      database: 'afpamon'
+      user: 'csharp',
+      password: 'csharp',
+      database: 'intervention'
     });
   };
  
