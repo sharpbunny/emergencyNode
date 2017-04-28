@@ -13,7 +13,7 @@ function User()
             con.query('select * from user', function(err, result) 
             {
                 con.release();
-                res.send(result);
+                res.send({status : 0, users : result});
             });
         });
     };
@@ -25,7 +25,7 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select * from user where id = ?', [id], function(err, result) {
+            con.query('select firsnameUser, nameUser, birthdayUser, emailUser, phoneUser, from user where idUser = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
@@ -34,7 +34,7 @@ function User()
                 } 
                 else 
                 {
-                    res.send(result);
+                    res.send({status : 0 , user :result});
                 }
             });
         });
