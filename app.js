@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/indexRoute');
 var userRoute = require('./routes/userRoute');
 //var typeRoute = require('./routes/typeRoute');
-//var userRoute = require('./routes/photoRoute');
+//var photoRoute = require('./routes/photoRoute');
 var itemRoute = require('./routes/itemRoute');
 /* -- instanciate connector to mySQL -- */
 var connection = require('./connection');
@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({limit: '50mb'})); //can get long request...
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
