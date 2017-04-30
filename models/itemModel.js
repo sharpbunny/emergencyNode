@@ -31,12 +31,12 @@ function Item()
                 con.release();
                 if (err) 
                 {
-			        console.log(err);
-                    res.send({status: 1, message: 'Failed to find'});
+                    console.log(err);
+                    res.send({status : 1, message : 'Failed to find'});
                 } 
                 else 
                 {
-                    res.send(result);
+                    res.send({status : 0 , item : result});
                 }
             });
         });
@@ -57,7 +57,7 @@ function Item()
                 con.release();
                 if (err) 
                 {
-			        console.log(err);
+                    console.log(err);
                     res.send({status: 1, message: 'ITEM creation failed'});
                 } 
                 else 

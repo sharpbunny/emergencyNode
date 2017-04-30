@@ -25,16 +25,16 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select firsnameUser, nameUser, birthdayUser, emailUser, phoneUser, from user where idUser = ?', [id], function(err, result) {
+            con.query('select firstnameUser, nameUser, birthdateUser, emailUser, phoneUser from user where idUser = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
                     console.log(err);
-                    res.send({status: 1, message: 'Failed to find'});
+                    res.send({status : 1, message : 'Failed to find'});
                 } 
                 else 
                 {
-                    res.send({status : 0 , user :result});
+                    res.send({status : 0 , user : result});
                 }
             });
         });
