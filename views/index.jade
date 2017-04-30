@@ -50,7 +50,18 @@ block content
   p Get a specific item 
   p Put and update a specific item
   p Delete a specific item 
- 
- 
 
+  h3 Access to Uploads
+  h4 Upload an image
+  form(method='POST' enctype='multipart/form-data' action='/upload')
+   div
+    input(type='text' name='title')
+   div
+    input(multiple='multiple' name='upload' type='file')
+   button(type='submit') Envoyer
 
+  h4 Retrieve file uploaded
+  p http://url/uploads/filename
+  p to autoresize use http://url/uploads/filename?dim=100 for 100 pixels wide
+  p thumbnails are stored in .cache directory
+  p need to have imagemagick installed
