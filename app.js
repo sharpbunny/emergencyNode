@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+//var logger = require('morgan');
+var logger = require('./utils/logger');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 /* -- Instanciate routes -- */
@@ -25,7 +26,8 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+logger.debug("Overriding 'Express' logger");
+app.use(require('morgan')("combined", { "stream": logger.stream }));
 app.use(bodyParser.json({limit: '50mb'})); //can get long request...
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
