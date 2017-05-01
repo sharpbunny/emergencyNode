@@ -45,6 +45,7 @@ app.use(function(req, res, next) {
 
 /* -- associate URL to ROUTES -- */
 app.use('/', routes);
+// we can't protect this route with token until we create a separate route to authenticate user
 app.use('/user', userRoute);
 // access to item is protected by token
 app.use('/item', verifytoken, itemRoute);
