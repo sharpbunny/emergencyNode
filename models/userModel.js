@@ -1,4 +1,5 @@
 var connection = require('../connection');
+var md5 = require('md5');
  
 function User() 
 {
@@ -168,8 +169,9 @@ function User()
                         connection.acquire(function(err, con) 
                         {
                             console.log("Check login md5 crypted password: " + user.email + ":" + user.pwd);
+                            var cryptedpwd = md5("theVerySecretSalt" + user.pwd);
                             // trying first with password not crypted
-                            con.query('select * from user where emailUser = ? AND passwordUser = MD5("theVerySecretSalt"?)', [user.email, user.pwd], function(err, result)
+                            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, cryptedpwd], function(err, result)
                             {
                                 con.release();
                                 if (err) 
