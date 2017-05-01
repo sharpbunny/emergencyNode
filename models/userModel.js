@@ -1,4 +1,5 @@
 var connection = require('../connection');
+var jwt = require('jsonwebtoken');
  
 function User() 
 {
@@ -147,8 +148,8 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-		    console.log(user.email);
-		    console.log(user.password);
+            console.log(user.email);
+            console.log(user.pwd);
             con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
             {
                 con.release();
@@ -159,8 +160,12 @@ function User()
                 } 
                 else 
                 {
-			        if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
-			        else res.send({status: 1, message: 'login failed'});
+                    var token = jwt.sign(user, "theVerySecretHash", {
+                        expiresIn: 1440 // exire in 1 hour
+                    });
+                    console.log("Token created: " + token);
+                    if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
+                    else res.send({status: 1, message: 'login failed'});
                 }
             });
         });
