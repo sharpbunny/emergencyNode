@@ -147,9 +147,9 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-		    console.log(user.email);
-		    console.log(user.password);
-            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
+            console.log("Check login for non crypted password: " + user.email + ":" + user.pwd);
+            // trying first with password not crypted
+            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result)
             {
                 con.release();
                 if (err) 
@@ -159,11 +159,36 @@ function User()
                 } 
                 else 
                 {
-			        if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
-			        else res.send({status: 1, message: 'login failed'});
+                    if(result.length > 0) {
+                        // TODO update old non encrypted password with md5 salted pwd here
+                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
+                    }
+                    else
+                    {
+                        connection.acquire(function(err, con) 
+                        {
+                            console.log("Check login md5 crypted password: " + user.email + ":" + user.pwd);
+                            // trying first with password not crypted
+                            con.query('select * from user where emailUser = ? AND passwordUser = MD5("theVerySecretSalt"?)', [user.email, user.pwd], function(err, result)
+                            {
+                                con.release();
+                                if (err) 
+                                {
+                                    console.log(err);
+                                    res.send({status: 2, message: 'Request error'});
+                                } 
+                                else 
+                                {
+                                    if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
+                                    else res.send({status: 1, message: 'login failed'});
+                                }
+                            });
+                        });
+                    }
                 }
             });
         });
+        
     }; 
 }
 
