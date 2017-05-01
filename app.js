@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 /* -- Instanciate routes -- */
 var routes = require('./routes/indexRoute');
 var userRoute = require('./routes/userRoute');
-//var typeRoute = require('./routes/typeRoute');
+var typeRoute = require('./routes/typeRoute');
 //var photoRoute = require('./routes/photoRoute');
 var itemRoute = require('./routes/itemRoute');
 /* -- instanciate connector to mySQL -- */
@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 app.use('/user', userRoute);
 app.use('/item', itemRoute);
-//app.use('/type', typeRoute);
+app.use('/type', typeRoute);
 //app.use('/photo', photoRoute);
 
 // catch 404 and forward to error handler
