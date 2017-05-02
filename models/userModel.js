@@ -1,9 +1,6 @@
 var connection = require('../connection');
-<<<<<<< HEAD
 var md5 = require('md5');
-=======
 var jwt = require('jsonwebtoken');
->>>>>>> master
  
 function User() 
 {
