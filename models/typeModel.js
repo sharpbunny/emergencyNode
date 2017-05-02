@@ -10,7 +10,7 @@ function Type()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select idType, nameType from type', function(err, result) 
+            con.query('select id_Type, LabelType, descriptionType from type', function(err, result) 
             {
                 con.release();
                 res.send({status : 0, types : result});
@@ -25,7 +25,7 @@ function Type()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select idType, nametype from type where idType = ?', [id], function(err, result) {
+            con.query('select id_Type, LabelType, descriptionType from type where id_Type = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
@@ -122,7 +122,7 @@ function Type()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('delete from type where id = ?', [id], function(err, result) 
+            con.query('delete from type where id_Type = ?', [id], function(err, result) 
             {
                 con.release();
                 if (err) 
