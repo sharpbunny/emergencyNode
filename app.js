@@ -16,7 +16,7 @@ var verifytoken = require('./models/verifytoken');
 var routes = require('./routes/indexRoute');
 var userRoute = require('./routes/userRoute');
 var typeRoute = require('./routes/typeRoute');
-//var photoRoute = require('./routes/photoRoute');
+var photoRoute = require('./routes/photoRoute');
 var itemRoute = require('./routes/itemRoute');
 /* -- instanciate connector to mySQL -- */
 var connection = require('./connection');
@@ -57,7 +57,7 @@ app.use('/user', userRoute);
 //app.use('/item', verifytoken, itemRoute);
 app.use('/item', itemRoute);
 app.use('/type', typeRoute);
-//app.use('/photo', photoRoute);
+app.use('/photo', photoRoute);
 
 // use quickthumb to send image (need imagemagick)
 app.use(qt.static(__dirname + '/'));
