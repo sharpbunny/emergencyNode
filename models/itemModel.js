@@ -13,7 +13,7 @@ function Item()
             con.query('select * from item', function(err, result) 
             {
                 con.release();
-                res.send({status: 1 , response: result});
+                res.send({status: 0 , response: result});
             });
         });
     };
