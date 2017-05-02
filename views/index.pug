@@ -12,13 +12,13 @@ append body
 
   h4 Post a new user with data json
   p method : POST
-  code http://rest.nomadi.fr/users/id
+  code http://rest.nomadi.fr/user/id
   p json to send (example): 
   code { "nameUser": "Soungue","loginUser": "Sam Soungue", "firstnameUser": "Sam", "birthdateUser": "2001-02-02T23:00:00.000Z", "passwordUser": "inburnwetrust","emailUser": "sam@soung.ue","phoneUser": "6544548464"}
 
   h4 Post a data json with user (email) and password
   p method : POST
-  code url :  http://rest.nomadi.fr/users/login
+  code url :  http://rest.nomadi.fr/user/login
   p json to send : 
   code { 'email' : "em@ail", "pwd" : "password"}
   p status received : 
@@ -43,10 +43,10 @@ append body
   code url : http://rest.nomadi.fr/user/5 (5 aka an user'id example )
 
   h3 Access to ITEM
-  h4 http://url/items
+  h4 http://url/item
   p Get all items
   p Post a new item
-  h4 http://url/items/id
+  h4 http://url/item/id
   p Get a specific item 
   p Put and update a specific item
   p Delete a specific item 

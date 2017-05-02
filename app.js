@@ -5,14 +5,15 @@ var fs = require('fs-extra');
 var qt = require('quickthumb');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+//var logger = require('morgan');
+var logger = require('./utils/logger');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 /* -- Instanciate routes -- */
 var routes = require('./routes/indexRoute');
 var userRoute = require('./routes/userRoute');
-//var typeRoute = require('./routes/typeRoute');
-//var userRoute = require('./routes/photoRoute');
+var typeRoute = require('./routes/typeRoute');
+//var photoRoute = require('./routes/photoRoute');
 var itemRoute = require('./routes/itemRoute');
 /* -- instanciate connector to mySQL -- */
 var connection = require('./connection');
@@ -28,8 +29,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+logger.debug("Overriding 'Express' logger");
+app.use(require('morgan')("combined", { "stream": logger.stream }));
 app.use(bodyParser.json({limit: '50mb'})); //can get long request...
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
@@ -48,7 +50,7 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 app.use('/user', userRoute);
 app.use('/item', itemRoute);
-//app.use('/type', typeRoute);
+app.use('/type', typeRoute);
 //app.use('/photo', photoRoute);
 
 // use quickthumb to send image (need imagemagick)
