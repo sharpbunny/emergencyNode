@@ -1,4 +1,5 @@
 var connection = require('../connection');
+var md5 = require('md5');
 var jwt = require('jsonwebtoken');
  
 function User() 
@@ -148,8 +149,8 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-            console.log(user.email);
-            console.log(user.pwd);
+            console.log("Check login for non crypted password: " + user.email + ":" + user.pwd);
+            // trying first with password not crypted
             con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
             {
                 con.release();
@@ -160,15 +161,47 @@ function User()
                 } 
                 else 
                 {
-                    var token = jwt.sign(user, "theVerySecretHash", {
-                        expiresIn: 1440 // exire in 1 hour
-                    });
-                    console.log("Token created: " + token);
-                    if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
-                    else res.send({status: 1, message: 'login failed'});
+                    if(result.length > 0) {
+                        // TODO update old non encrypted password with md5 salted pwd here
+                        var token = jwt.sign(user, "theVerySecretHash", {
+                            expiresIn: 1440 // exire in 1 hour
+                        });
+                        console.log("Token created: " + token);
+                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
+                    }
+                    else
+                    {
+                        connection.acquire(function(err, con) 
+                        {
+                            console.log("Check login md5 crypted password: " + user.email + ":" + user.pwd);
+                            var cryptedpwd = md5("theVerySecretSalt" + user.pwd);
+                            // trying first with password not crypted
+                            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, cryptedpwd], function(err, result)
+                            {
+                                con.release();
+                                if (err) 
+                                {
+                                    console.log(err);
+                                    res.send({status: 2, message: 'Request error'});
+                                } 
+                                else 
+                                {
+                                    if(result.length > 0) {
+                                        var token = jwt.sign(user, "theVerySecretHash", {
+                                            expiresIn: 1440 // exire in 1 hour
+                                        });
+                                        console.log("Token created: " + token);
+                                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
+                                    }
+                                    else res.send({status: 1, message: 'login failed'});
+                                }
+                            });
+                        });
+                    }
                 }
             });
         });
+        
     }; 
 }
 
