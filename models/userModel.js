@@ -31,11 +31,11 @@ function User()
                 if (err) 
                 {
                     console.log(err);
-                    res.send({status: 1, message: 'Failed to find'});
+                    res.send({status : 1, message : 'Failed to find'});
                 } 
                 else 
                 {
-                    res.send({status : 0 , user :result});
+                    res.send({status : 0 , user : result});
                 }
             });
         });

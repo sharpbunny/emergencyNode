@@ -19,8 +19,8 @@ function Item()
     };
 
     /**
-     * Get a specific user
-     * @params id user id 
+     * Get a specific item
+     * @params id item id 
      * @params res response
      */
     this.get = function(id, res) 
@@ -31,20 +31,20 @@ function Item()
                 con.release();
                 if (err) 
                 {
-			        console.log(err);
-                    res.send({status: 1, message: 'Failed to find'});
+                    console.log(err);
+                    res.send({status : 1, message : 'Failed to find'});
                 } 
                 else 
                 {
-                    res.send({status : 0 , item :result});
+                    res.send({status : 0 , item : result});
                 }
             });
         });
     };
 
     /**
-     * Create a new user
-     * @params item user json
+     * Create a new item
+     * @params item item json
      * @params res
      */
     this.create = function(item, res) 
@@ -57,7 +57,7 @@ function Item()
                 con.release();
                 if (err) 
                 {
-			        console.log(err);
+                    console.log(err);
                     res.send({status: 1, message: 'ITEM creation failed'});
                 } 
                 else 
@@ -69,16 +69,16 @@ function Item()
     };
 
     /**
-     * Update a specific user
-     * @params userid user's id
-     * @params user user in json format
+     * Update a specific item
+     * @params id item's id
+     * @params item item in json format
      * @params res response 
      */
-    this.update = function(userid, user, res) 
+    this.update = function(id, item, res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('update item set ? where id = ?', [user, userid], function(err, result) 
+            con.query('update item set ? where id = ?', [item, id], function(err, result) 
             {
                 con.release();
                 if (err) 
@@ -95,8 +95,8 @@ function Item()
     };
 
     /**
-     * Delete a specifi user
-     * @params id user's id
+     * Delete a specific item
+     * @params id item's id
      * @params res response
      */
     this.delete = function(id, res) 

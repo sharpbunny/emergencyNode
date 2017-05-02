@@ -1,52 +1,52 @@
-//TODO : rename file to usersRouter 
+//TODO : rename file to typesRouter
 var express = require('express');
 var bodyParser = require('body-parser');
-var users = express.Router();
+var types = express.Router();
 
-var user = require('../models/user');
+var type = require('../models/typeModel');
 
-/** get all and post a new user */
-users.route('/')
+/** get all and post a new type */
+types.route('/')
 
 .get(function(req,res,next)
 {
-    user.getAll(res);
+    type.getAll(res);
 })
 
 .post(function(req, res, next)
 {
-    user.create(req.body, res);
+    type.create(req.body, res);
 });
 
-/** get stuff from specific user */
-users.route('/:id')
+/** get stuff from specific type */
+types.route('/:id')
 
 .get(function(req,res,next)
 {
-    //TODO : get element by req.params.userId
-    user.get(req.params.id, res);
+    //TODO : get element by req.params.typeId
+    type.get(req.params.id, res);
 })
 
 .put(function(req, res, next)
 {
-  //TODO : get element by req.params.userId
-    user.update(req.body, res);
+  //TODO : get element by req.params.typeId
+    type.update(req.body, res);
 })
 
 .delete(function(req, res, next)
 {
-    //TODO : get element by req.params.userId
-    user.delete(req.params.id, res);
+    //TODO : get element by req.params.typeId
+    type.delete(req.params.id, res);
 });
 
 /** get elements from login */
-users.route('/login')
+types.route('/login')
 
 .post(function(req, res, next) 
 {
     console.log('check login');
-    user.checkLogin(req.body, res);
+    type.checkLogin(req.body, res);
 });
  
 
-module.exports = users;
+module.exports = types;
