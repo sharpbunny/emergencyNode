@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `item`;
 CREATE TABLE `item` (
   `idItem` int(11) AUTO_INCREMENT,
   `commentaire` text,
-  `majItem` date DEFAULT NULL,
+  `majItem` datetime DEFAULT NULL,
   `item_Lat` double NOT NULL,
   `item_Lon` double NOT NULL,
   `idUser` int(11) NOT NULL,
