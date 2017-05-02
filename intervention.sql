@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
-  `idItem` int(11) NOT NULL,
+  `idItem` int(11) AUTO_INCREMENT,
   `commentaire` text,
   `majItem` date DEFAULT NULL,
   `item_Lat` double NOT NULL,
@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `photo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `photo` (
-  `idPhoto` int(11) NOT NULL,
+  `idPhoto` int(11) AUTO_INCREMENT,
   `datePhoto` datetime NOT NULL,
   `adressUrlPhoto` varchar(400) NOT NULL,
   `idItem` int(11) NOT NULL,
@@ -67,7 +67,7 @@ DROP TABLE IF EXISTS `type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `type` (
-  `id_Type` int(11) NOT NULL,
+  `id_Type` int(11) AUTO_INCREMENT,
   `LabelType` varchar(25) NOT NULL,
   `descriptionType` varchar(40) NOT NULL,
   PRIMARY KEY (`id_Type`)
@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11) AUTO_INCREMENT,
   `nameUser` varchar(40) NOT NULL,
   `loginUser` varchar(40) NOT NULL,
   `firstnameUser` varchar(40) NOT NULL,
