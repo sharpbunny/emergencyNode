@@ -9,6 +9,9 @@ var favicon = require('serve-favicon');
 var logger = require('./utils/logger');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+/* -- Json Web Token -- */
+var jwt = require('jsonwebtoken');
+var verifytoken = require('./models/verifytoken');
 /* -- Instanciate routes -- */
 var routes = require('./routes/indexRoute');
 var userRoute = require('./routes/userRoute');
@@ -48,7 +51,10 @@ app.use(function(req, res, next) {
 
 /* -- associate URL to ROUTES -- */
 app.use('/', routes);
+// we can't protect this route with token until we create a separate route to authenticate user
 app.use('/user', userRoute);
+// access to item is protected by token
+//app.use('/item', verifytoken, itemRoute);
 app.use('/item', itemRoute);
 app.use('/type', typeRoute);
 //app.use('/photo', photoRoute);

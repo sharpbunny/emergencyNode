@@ -1,5 +1,9 @@
 var connection = require('../connection');
+<<<<<<< HEAD
 var md5 = require('md5');
+=======
+var jwt = require('jsonwebtoken');
+>>>>>>> master
  
 function User() 
 {
@@ -150,7 +154,7 @@ function User()
         {
             console.log("Check login for non crypted password: " + user.email + ":" + user.pwd);
             // trying first with password not crypted
-            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result)
+            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
             {
                 con.release();
                 if (err) 
@@ -162,7 +166,11 @@ function User()
                 {
                     if(result.length > 0) {
                         // TODO update old non encrypted password with md5 salted pwd here
-                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
+                        var token = jwt.sign(user, "theVerySecretHash", {
+                            expiresIn: 1440 // exire in 1 hour
+                        });
+                        console.log("Token created: " + token);
+                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
                     }
                     else
                     {
@@ -181,7 +189,13 @@ function User()
                                 } 
                                 else 
                                 {
-                                    if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
+                                    if(result.length > 0) {
+                                        var token = jwt.sign(user, "theVerySecretHash", {
+                                            expiresIn: 1440 // exire in 1 hour
+                                        });
+                                        console.log("Token created: " + token);
+                                        res.send({status: 0, message: 'Connexion OK', id: result[0].idUser, token : token});
+                                    }
                                     else res.send({status: 1, message: 'login failed'});
                                 }
                             });
