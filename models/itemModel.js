@@ -10,10 +10,22 @@ function Item()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select * from item', function(err, result) 
-            {
+            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type, \
+                        u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser, \
+                        t.LabelType, t.descriptionType \
+                        from item as i \
+                        left join user as u on u.idUser = i.idUser \
+                        left join type as t on t.id_Type = i.id_Type' , function(err, result) {
                 con.release();
-                res.send({status: 0 , response: result});
+                if (err) 
+                {
+                    console.log(err);
+                    res.send({status : 1, message : 'Failed to find all items'});
+                } 
+                else 
+                {
+                    res.send({status: 0 , response: result});
+                }
             });
         });
     };
@@ -27,7 +39,13 @@ function Item()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select * from item where id = ?', [id], function(err, result) {
+            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type, \
+                        u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser, \
+                        t.LabelType, t.descriptionType \
+                        from item as i \
+                        left join user as u on u.idUser = i.idUser \
+                        left join type as t on t.id_Type = i.id_Type \
+                        where idItem = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
@@ -78,7 +96,7 @@ function Item()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('update item set ? where id = ?', [item, id], function(err, result) 
+            con.query('update item set ? where idItem = ?', [item, id], function(err, result) 
             {
                 con.release();
                 if (err) 
@@ -103,7 +121,7 @@ function Item()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('delete from item where id = ?', [id], function(err, result) 
+            con.query('delete from item where idItem = ?', [id], function(err, result) 
             {
                 con.release();
                 if (err) 
