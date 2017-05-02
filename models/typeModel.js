@@ -1,31 +1,31 @@
 var connection = require('../connection');
  
-function User() 
+function Type()
 {
     /**
-     * Get ALL users from table
+     * Get ALL types from table
      * @params res response 
      */
     this.getAll = function(res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select * from user', function(err, result) 
+            con.query('select idType, nameType from type', function(err, result) 
             {
                 con.release();
-                res.send({status : 0, users : result});
+                res.send({status : 0, types : result});
             });
         });
     };
 
     /**
-     * Get a specific user
+     * Get a specific type
      */
     this.get = function(id, res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select firstnameUser, nameUser, birthdateUser, emailUser, phoneUser from user where idUser = ?', [id], function(err, result) {
+            con.query('select idType, nametype from type where idType = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
@@ -34,28 +34,28 @@ function User()
                 } 
                 else 
                 {
-                    res.send({status : 0 , user : result});
+                    res.send({status : 0 , type : result});
                 }
             });
         });
     };
 
     /**
-     * Create a user
-     * @params user user in json format
+     * Create a type
+     * @params type type in json format
      * @params res response
      */
-    this.create = function(user, res) 
+    this.create = function(type, res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('insert into user set ?', user, function(err, result) 
+            con.query('insert into type set ?', type, function(err, result) 
             {
                 con.release();
                 if (err) 
                 {
                     console.log(err);
-                    res.send({status: 1, message: 'USER creation failed'});
+                    res.send({status: 1, message: 'type creation failed'});
                 } else 
                 {
                     getLastId(res);
@@ -79,50 +79,50 @@ function User()
                 if (err) 
                 {
                     console.log(err);
-                    res.send({status: 1, message: 'USER creation failed'});
+                    res.send({status: 1, message: 'type creation failed'});
                 }
-                else 
-                {
-                    res.send({status: 0, message: 'USER created successfully', id:result[0].id});
+                 else 
+                 {
+                    res.send({status: 0, message: 'type created successfully', id:result[0].id});
                 }
             });
         });
     }
 
     /**
-     * Update a specific user
-     * @params user user in json format
+     * Update a specific type
+     * @params type type in json format
      */
-    this.update = function(user, res) 
+    this.update = function(type, res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('update user set ? where id = ?', [user, user.id], function(err, result) 
+            con.query('update type set ? where id = ?', [type, type.id], function(err, result) 
             {
                 con.release();
                 if (err) 
                 {
                     console.log(err);
-                    res.send({status: 1, message: 'USER update failed'});
+                    res.send({status: 1, message: 'type update failed'});
                 } 
                 else 
                 {
-                    res.send({status: 0, message: 'USER updated successfully'});
+                    res.send({status: 0, message: 'type updated successfully'});
                 }
             });
         });
     };
 
     /**
-     * Delete a specific user
-     * @params id user's id
+     * Delete a specific type
+     * @params id type's id
      * @params res response
      */
     this.delete = function(id, res) 
     {
         connection.acquire(function(err, con) 
         {
-            con.query('delete from user where id = ?', [id], function(err, result) 
+            con.query('delete from type where id = ?', [id], function(err, result) 
             {
                 con.release();
                 if (err) 
@@ -137,34 +137,6 @@ function User()
             });
         });
     };
-
-    /**
-     * Check a login validity
-     * @params user user in json format
-     * @params res response
-     */
-    this.checkLogin = function(user, res) 
-    {
-        connection.acquire(function(err, con) 
-        {
-		    console.log(user.email);
-		    console.log(user.password);
-            con.query('select * from user where emailUser = ? AND passwordUser = ?', [user.email, user.pwd], function(err, result) 
-            {
-                con.release();
-                if (err) 
-                {
-                    console.log(err);
-                    res.send({status: 2, message: 'Request error'});
-                } 
-                else 
-                {
-			        if(result.length > 0) res.send({status: 0, message: 'Connexion OK', id: result[0].idUser});
-			        else res.send({status: 1, message: 'login failed'});
-                }
-            });
-        });
-    }; 
 }
 
-module.exports = new User();
+module.exports = new Type();
