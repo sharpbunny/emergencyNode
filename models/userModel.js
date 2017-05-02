@@ -26,7 +26,7 @@ function User()
     {
         connection.acquire(function(err, con) 
         {
-            con.query('select firsnameUser, nameUser, birthdayUser, emailUser, phoneUser, from user where idUser = ?', [id], function(err, result) {
+            con.query('select firstnameUser, nameUser, birthdateUser, emailUser, phoneUser from user where idUser = ?', [id], function(err, result) {
                 con.release();
                 if (err) 
                 {
@@ -82,8 +82,8 @@ function User()
                     console.log(err);
                     res.send({status: 1, message: 'USER creation failed'});
                 }
-                 else 
-                 {
+                else 
+                {
                     res.send({status: 0, message: 'USER created successfully', id:result[0].id});
                 }
             });
@@ -115,7 +115,7 @@ function User()
     };
 
     /**
-     * Delete a specifi user
+     * Delete a specific user
      * @params id user's id
      * @params res response
      */

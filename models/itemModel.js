@@ -36,7 +36,7 @@ function Item()
                 } 
                 else 
                 {
-                    res.send(result);
+                    res.send({status : 0 , item :result});
                 }
             });
         });
