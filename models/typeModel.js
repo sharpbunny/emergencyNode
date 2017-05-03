@@ -62,7 +62,7 @@ function Type() {
                 con.release();
                 if (err) {
                     console.log(err);
-                    res.send({ status: 1, message: 'type creation failed' });
+                    res.send({ status: 1, message: 'type creation failed', error: err });
                 } else {
                     res.send({ status: 0, message: 'type created successfully', id: result[0].id });
                 }
