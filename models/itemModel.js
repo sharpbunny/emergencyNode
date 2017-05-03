@@ -8,7 +8,7 @@ function Item() {
      */
     this.getAll = function(res) {
         connection.acquire(function(err, con) {
-            var sql = 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+            var options = { sql: 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
                         , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
                         , t.id_Type, t.LabelType, t.descriptionType \
                         , p.idPhoto, p.idPhoto, p.datePhoto, p.adressUrlPhoto \
@@ -16,7 +16,8 @@ function Item() {
                         left join user as u on u.idUser = i.idUser \
                         left join type as t on t.id_Type = i.id_Type \
                         left join photo as p on p.idItem = i.idItem \
-                        ';
+                        group by i.idItem' };
+
             // var sql = 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
             //             , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
             //             , t.id_Type, t.LabelType, t.descriptionType \
@@ -26,7 +27,7 @@ function Item() {
             //             left join type as t on t.id_Type = i.id_Type \
             //             ';
 
-            con.query(sql, function(err, result) {
+            con.query(options, function(err, result) {
                 con.release();
                 if (err) {
                     console.log(err);
