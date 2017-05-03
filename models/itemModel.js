@@ -32,8 +32,8 @@ function Item() {
                     console.log(err);
                     res.send({ status: 1, message: 'Failed to find all items', error: err });
                 } else {
-                    var nestedRows = func.convertToNested(result, nestingOptions);
-                    console.dir(nestedRows);
+                    //var nestedRows = func.convertToNested(result, nestingOptions);
+                    //console.dir(nestedRows);
 
                     res.send({ status: 0, response: result });
                 }
