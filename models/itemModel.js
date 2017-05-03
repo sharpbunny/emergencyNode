@@ -1,4 +1,5 @@
 var connection = require('../connection');
+var func = require('../utils/func.js');
 
 function Item() {
     /**
@@ -7,20 +8,30 @@ function Item() {
      */
     this.getAll = function(res) {
         connection.acquire(function(err, con) {
-            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
-                        ,u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
-                        , t.LabelType, t.descriptionType \
-                        , p.idPhoto, p.datePhoto, p.adressUrlPhoto \
+            var options = { sql: 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+                        , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
+                        , t.id_Type, t.LabelType, t.descriptionType \
+                        , p.idPhoto, p.idPhoto, p.datePhoto, p.adressUrlPhoto \
                         from item as i \
                         left join user as u on u.idUser = i.idUser \
                         left join type as t on t.id_Type = i.id_Type \
                         left join photo as p on p.idItem = i.idItem \
-                        ', function(err, result) {
+                        ', nestTables: true };
+            var nestingOptions = [
+                { tableName: 'i', key: 'idItem', hasForeignKeyToUpperTable: true },
+                //{ tableName: 'u', key: 'idUser', hasForeignKeyToUpperTable: true },
+                { tableName: 't', key: 'id_Type', hasForeignKeyToUpperTable: true },
+                { tableName: 'p', key: 'idItem', hasForeignKeyToUpperTable: true }
+            ]
+            con.query(options, function(err, result) {
                 con.release();
                 if (err) {
                     console.log(err);
                     res.send({ status: 1, message: 'Failed to find all items' });
                 } else {
+                    var nestedRows = func.convertToNested(result, nestingOptions);
+                    console.dir(nestedRows);
+
                     res.send({ status: 0, response: result });
                 }
             });
