@@ -59,7 +59,7 @@ function Item() {
                 con.release();
                 if (err) {
                     console.log(err);
-                    res.send({ status: 1, message: 'Failed to find' });
+                    res.send({ status: 1, message: 'Failed to find', error: err });
                 } else {
                     res.send({ status: 0, item: result });
                 }
