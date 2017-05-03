@@ -1,5 +1,4 @@
 var connection = require('../connection');
-var func = require('../utils/func.js');
 
 function Item() {
     /**
