@@ -10,7 +10,7 @@ function Item() {
             con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
                         ,u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
                         , t.LabelType, t.descriptionType \
-                        , p.idPhoto,  \
+                        , p.idPhoto, p.datePhoto, p.adressUrlPhoto \
                         from item as i \
                         left join user as u on u.idUser = i.idUser \
                         left join type as t on t.id_Type = i.id_Type \
