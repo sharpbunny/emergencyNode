@@ -1,30 +1,27 @@
 var connection = require('../connection');
- 
-function Item() 
-{
+
+function Item() {
     /**
      * Get ALL items from table
      * @params res response 
      */
-    this.getAll = function(res) 
-    {
-        connection.acquire(function(err, con) 
-        {
-            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type, \
-                        u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser, \
-                        t.LabelType, t.descriptionType \
+    this.getAll = function(res) {
+        connection.acquire(function(err, con) {
+            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+                        ,u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
+                        , t.LabelType, t.descriptionType \
+                        , p.idPhoto, p.datePhoto, p.adressUrlPhoto \
                         from item as i \
                         left join user as u on u.idUser = i.idUser \
-                        left join type as t on t.id_Type = i.id_Type' , function(err, result) {
+                        left join type as t on t.id_Type = i.id_Type \
+                        left join photo as p on p.idItem = i.idItem \
+                        ', function(err, result) {
                 con.release();
-                if (err) 
-                {
+                if (err) {
                     console.log(err);
-                    res.send({status : 1, message : 'Failed to find all items'});
-                } 
-                else 
-                {
-                    res.send({status: 0 , response: result});
+                    res.send({ status: 1, message: 'Failed to find all items' });
+                } else {
+                    res.send({ status: 0, response: result });
                 }
             });
         });
@@ -35,10 +32,8 @@ function Item()
      * @params id item id 
      * @params res response
      */
-    this.get = function(id, res) 
-    {
-        connection.acquire(function(err, con) 
-        {
+    this.get = function(id, res) {
+        connection.acquire(function(err, con) {
             con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type, \
                         u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser, \
                         t.LabelType, t.descriptionType \
@@ -47,14 +42,11 @@ function Item()
                         left join type as t on t.id_Type = i.id_Type \
                         where idItem = ?', [id], function(err, result) {
                 con.release();
-                if (err) 
-                {
+                if (err) {
                     console.log(err);
-                    res.send({status : 1, message : 'Failed to find'});
-                } 
-                else 
-                {
-                    res.send({status : 0 , item : result});
+                    res.send({ status: 1, message: 'Failed to find' });
+                } else {
+                    res.send({ status: 0, item: result });
                 }
             });
         });
@@ -65,22 +57,16 @@ function Item()
      * @params item item json
      * @params res
      */
-    this.create = function(item, res) 
-    {
+    this.create = function(item, res) {
         console.log(item);
-        connection.acquire(function(err, con) 
-        {
-            con.query('insert into item set ?', item, function(err, result) 
-            {
+        connection.acquire(function(err, con) {
+            con.query('insert into item set ?', item, function(err, result) {
                 con.release();
-                if (err) 
-                {
+                if (err) {
                     console.log(err);
-                    res.send({status: 1, message: 'ITEM creation failed'});
-                } 
-                else 
-                {
-                    res.send({status: 0, message: 'ITEM created successfully'});
+                    res.send({ status: 1, message: 'ITEM creation failed' });
+                } else {
+                    res.send({ status: 0, message: 'ITEM created successfully' });
                 }
             });
         });
@@ -92,21 +78,15 @@ function Item()
      * @params item item in json format
      * @params res response 
      */
-    this.update = function(id, item, res) 
-    {
-        connection.acquire(function(err, con) 
-        {
-            con.query('update item set ? where idItem = ?', [item, id], function(err, result) 
-            {
+    this.update = function(id, item, res) {
+        connection.acquire(function(err, con) {
+            con.query('update item set ? where idItem = ?', [item, id], function(err, result) {
                 con.release();
-                if (err) 
-                {
+                if (err) {
                     console.log(err);
-                    res.send({status: 1, message: 'ITEM update failed'});
-                } 
-                else 
-                {
-                    res.send({status: 0, message: 'ITEM updated successfully'});
+                    res.send({ status: 1, message: 'ITEM update failed' });
+                } else {
+                    res.send({ status: 0, message: 'ITEM updated successfully' });
                 }
             });
         });
@@ -117,26 +97,20 @@ function Item()
      * @params id item's id
      * @params res response
      */
-    this.delete = function(id, res) 
-    {
-        connection.acquire(function(err, con) 
-        {
-            con.query('delete from item where idItem = ?', [id], function(err, result) 
-            {
+    this.delete = function(id, res) {
+        connection.acquire(function(err, con) {
+            con.query('delete from item where idItem = ?', [id], function(err, result) {
                 con.release();
-                if (err) 
-                {
+                if (err) {
                     console.log(err);
-                    res.send({status: 1, message: 'Failed to delete'});
-                } 
-                else 
-                {
-                    res.send({status: 0, message: 'Deleted successfully'});
+                    res.send({ status: 1, message: 'Failed to delete' });
+                } else {
+                    res.send({ status: 0, message: 'Deleted successfully' });
                 }
             });
         });
     };
-    
+
 }
 
 module.exports = new Item();
