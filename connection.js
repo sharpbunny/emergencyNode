@@ -1,7 +1,7 @@
 /**
  * module to connect to mysql database
  */
-var mysql = require('mysql2');
+var mysql = require('mysql');
 
 function Connection() {
     this.pool = null;
