@@ -17,6 +17,15 @@ function Item() {
                         left join type as t on t.id_Type = i.id_Type \
                         left join photo as p on p.idItem = i.idItem \
                         ', nestTables: true };
+            var options = { sql: 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+                        , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
+                        , t.id_Type, t.LabelType, t.descriptionType \
+                        , JSON_ARRAY((SELECT idPhoto from photo where photo.idItem = item.idItem)) \
+                        from item as i \
+                        left join user as u on u.idUser = i.idUser \
+                        left join type as t on t.id_Type = i.id_Type \
+                        left join photo as p on p.idItem = i.idItem \
+                        ' };
             var nestingOptions = [
                 { tableName: 'i', key: 'idItem', hasForeignKeyToUpperTable: true },
                 //{ tableName: 'u', key: 'idUser', hasForeignKeyToUpperTable: true },
@@ -27,7 +36,7 @@ function Item() {
                 con.release();
                 if (err) {
                     console.log(err);
-                    res.send({ status: 1, message: 'Failed to find all items' });
+                    res.send({ status: 1, message: 'Failed to find all items', error: err });
                 } else {
                     var nestedRows = func.convertToNested(result, nestingOptions);
                     console.dir(nestedRows);
