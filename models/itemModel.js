@@ -6,41 +6,59 @@ function Item() {
      * @params res response 
      */
     this.getAll = function(res) {
+        var callback = function(items) {
+            res.send(items);
+        }
+
         connection.acquire(function(err, con) {
-            var options = { sql: 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+            con.query('select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
                         , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
                         , t.id_Type, t.LabelType, t.descriptionType \
-                        , p.idPhoto, p.idPhoto, p.datePhoto, p.adressUrlPhoto \
                         from item as i \
                         left join user as u on u.idUser = i.idUser \
-                        left join type as t on t.id_Type = i.id_Type \
-                        left join photo as p on p.idItem = i.idItem \
-                        group by i.idItem' };
-
-
-            // var sql = 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
-            //             , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
-            //             , t.id_Type, t.LabelType, t.descriptionType \
-            //             , ((SELECT idPhoto from photo where photo.idItem = i.idItem)) as idPhotos\
-            //             from item as i \
-            //             left join user as u on u.idUser = i.idUser \
-            //             left join type as t on t.id_Type = i.id_Type \
-            //             ';
-
-            con.query(options, function(err, result) {
-                con.release();
-                if (err) {
-                    console.log(err);
-                    res.send({ status: 1, message: 'Failed to find all items', error: err });
-                } else {
-                    //var nestedRows = func.convertToNested(result, nestingOptions);
-                    //console.dir(nestedRows);
-
-                    res.send({ status: 0, response: result });
+                        left join type as t on t.id_Type = i.id_Type', function(err, items, fields) {
+                var pending = items.length;
+                for (var i=0; i<items.length; i++) {
+                    console.log("SELECT * FROM photo WHERE idItem=" + items[i].idItem);
+                    con.query("SELECT * FROM photo WHERE idItem=" + [items[i].idItem]
+                    , function(err, photos, fields) {
+                        
+                        items[i-1].photos = [photos];
+                        
+                        if (0 === --pending) {
+                            callback(items);
+                        }
+                    });
                 }
             });
         });
+
+        // connection.acquire(function(err, con) {
+            // var sql = 'select i.idItem, i.commentaire, majItem, i.item_Lat, i.item_Lon, i.idUser, i.id_Type \
+                        // , u.idUser, u.nameUser, u.loginUser, u.firstnameUser, u.birthdateUser, u.emailUser, u.phoneUser \
+                        // , t.id_Type, t.LabelType, t.descriptionType \
+                        // from item as i \
+                        // left join user as u on u.idUser = i.idUser \
+                        // left join type as t on t.id_Type = i.id_Type'
+
+            // con.query(sql, function(err, result) {
+                // con.release();
+                // if (err) {
+                    // console.log(err);
+                    // res.send({ status: 1, message: 'Failed to find all items', error: err });
+                // } else {
+                    // for (var i=0; i<result.length; i++) {
+                        // var row = result[i];
+                        // console.log(row.idItem);
+                        // console.log(row.commentaire);
+                        // //getPhoto(row.idItem, res);
+                    // }
+                    // //res.send({ status: 0, response: result });
+                // }
+            // });
+        // });
     };
+    
 
     /**
      * Get a specific item
