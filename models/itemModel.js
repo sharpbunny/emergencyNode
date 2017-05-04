@@ -19,7 +19,7 @@ function Item() {
                         left join type as t on t.id_Type = i.id_Type', function(err, items, fields) {
                 var pending = items.length;
                 for (var i in items) {
-                    con.query({sql:"SELECT * FROM photo WHERE idItem=" + [items[i].idItem], id:i}, function(err, photos, fields) {
+                    con.query("SELECT * FROM photo WHERE idItem=" + [items[i].idItem], function(err, photos, fields) {
                         // add photos to items
                         items[items.length-pending].photo = photos;
                         // waiting for all query done
