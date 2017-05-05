@@ -99,7 +99,7 @@ function Type() {
                 con.release();
                 if (err) {
                     console.log(err);
-                    res.send({ status: 1, message: 'Failed to delete' });
+                    res.send({ status: 1, message: 'Failed to delete', error: err });
                 } else {
                     res.send({ status: 0, message: 'Deleted successfully' });
                 }
