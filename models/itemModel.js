@@ -7,7 +7,7 @@ function Item() {
      */
     this.getAll = function(res) {
         var callback = function(items) {
-            res.send(items);
+            res.send({ status: 0, response: items });
         }
 
         connection.acquire(function(err, con) {
@@ -91,7 +91,7 @@ function Item() {
                 con.release();
                 if (err) {
                     console.log(err);
-                    res.send({ status: 1, message: 'ITEM update failed' });
+                    res.send({ status: 1, message: 'ITEM update failed', error: err });
                 } else {
                     res.send({ status: 0, message: 'ITEM updated successfully' });
                 }
