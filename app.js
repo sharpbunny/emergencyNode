@@ -69,8 +69,16 @@ app.post('/upload', function (req, res)
   {
     res.writeHead(200, {'content-type': 'text/plain'});
     res.write('received upload:\n\n');
-    res.end(util.inspect({fields: fields, files: files}));
+    res.end(util.inspect({fields: fields, files: files, error: err}));
   });
+  
+  form.on('progress', function(bytesReceived, bytesExpected) {
+      console.log("Transfer progress: " + bytesReceived + " : " + bytesExpected);
+    });
+  
+  form.on('error', function(err) {
+      console.log(err);
+    });
 
   form.on('end', function(fields, files) 
   {
