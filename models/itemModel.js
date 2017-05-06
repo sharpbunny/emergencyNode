@@ -19,7 +19,10 @@ function Item() {
                         left join type as t on t.id_Type = i.id_Type', function(err, items, fields) {
                 var pending = items.length;
                 for (var i in items) {
-                    con.query("SELECT * FROM photo WHERE idItem=" + [items[i].idItem], (function(i, err, photos, fields) {
+                    con.query("SELECT idPhoto, datePhoto \
+                                    , CONCAT(\"http://rest.nomadi.fr/uploads/\", adressUrlPhoto) as adressUrlPhoto \
+                                    , CONCAT(\"http://rest.noamdi.fr/uploads/\", adressUrlPhoto, \"?dim=40x40\") as thumbUrlPhoto \
+                                    , idItem, idUser FROM photo WHERE idItem=" + [items[i].idItem], (function(i, err, photos, fields) {
                         // add photos to items
                         items[i].photo = photos;
                         // waiting for all query done
