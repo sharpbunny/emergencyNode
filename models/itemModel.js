@@ -21,7 +21,7 @@ function Item() {
                 for (var i in items) {
                     con.query("SELECT idPhoto, datePhoto \
                                     , CONCAT(\"http://rest.nomadi.fr/uploads/\", adressUrlPhoto) as adressUrlPhoto \
-                                    , CONCAT(\"http://rest.nomadi.fr/uploads/\", adressUrlPhoto, \"?dim=40x40\") as thumbUrlPhoto \
+                                    , CONCAT(\"http://rest.nomadi.fr/uploads/\", adressUrlPhoto, \"?dim=100x100\") as thumbUrlPhoto \
                                     , idItem, idUser FROM photo WHERE idItem=" + [items[i].idItem], (function(i, err, photos, fields) {
                         // add photos to items
                         items[i].photo = photos;
@@ -33,6 +33,7 @@ function Item() {
                     }).bind(null, i));
                 }
             });
+            con.release();
         });
     };
 
